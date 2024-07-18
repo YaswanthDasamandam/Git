@@ -158,45 +158,41 @@ int save_string_to_file(const char *file_string, const char *to_folder, const ch
     return 0;
 }
 
-/* Function to create a directory if it doesn't already exist*/
-int create_directory(const char *path)
-{
+
+/* Function to check if a file exists*/
+int file_exists(const char *path) {
     struct stat st;
-    if (stat(path, &st) == 0 && S_ISDIR(st.st_mode))
-    {
-        /*printf("Directory '%s' already exists.\n", path);*/
-        printf("Directory already exists.\n", path);
+    return (stat(path, &st) == 0);
+}
+
+/* Function to create a directory if it doesn't already exist*/
+int create_directory(const char *path) {
+    struct stat st;
+    if (stat(path, &st) == 0 && S_ISDIR(st.st_mode)) {
+        printf("Directory '%s' already exists.\n", path);
         return 0;
     }
 
-    if (mkdir(path, 0755) != 0)
-    {
+    if (mkdir(path, 0755) != 0) {
         perror("Error creating directory");
         return 1;
     }
     return 0;
 }
 
-/* Function to create a file*/
-int create_file(const char *path)
-{   
+/*Function to create a file*/
+int create_file(const char *path) {
     if (file_exists(path)) {
+        printf("File '%s' already exists.\n", path);
         return 0;
     }
     FILE *file = fopen(path, "w");
-    if (file == NULL)
-    {
+    if (file == NULL) {
         perror("Error creating file");
         return 1;
     }
     fclose(file);
     return 0;
-}
-
-/* Function to check if a file exists*/
-int file_exists(const char *file_path)
-{
-    return access(file_path, F_OK) == 0;
 }
 
 int clear_contents(const char *filename)
